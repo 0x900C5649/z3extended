@@ -68,17 +68,17 @@ def main():
                                                  'and outputs plain z3 files')
     parser.add_argument('--funclib', type=str, nargs='?',
                     help='the library which defines the callable functions')
-    parser.add_argument('--in', type=open, nargs='?', default=sys.stdin,
+    parser.add_argument('--in', dest='input',  type=open, nargs='?', default=sys.stdin,
                     help='input file (default=StdIN)')
-    parser.add_argument('--out', type=argparse.FileType('w'), nargs='?', default=sys.stdout,
+    parser.add_argument('--out', dest='output', type=argparse.FileType('w'), nargs='?', default=sys.stdout,
                     help='output file (default=StdOUT)')
-    parser.add_argument('--version', action='version', version='%(prog)s 0.1b')
+    parser.add_argument('--version', action='version', version='%(prog)s 0.11b')
     args = parser.parse_args()
     if args.funclib is not None:
-        funclib = importlib.import_module(args.funclib)
+        funclib = importlib.import_module(os.path.splitext(args.funclib)[0])
     
-    basefilestr = args.inputfile.read()
-    doit(basefilestr, args.outputfile)
+    basefilestr = args.input.read()
+    doit(basefilestr, args.output)
 
 if __name__ == "__main__":
     main()
