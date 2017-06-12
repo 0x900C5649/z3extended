@@ -75,7 +75,11 @@ def main():
     parser.add_argument('--version', action='version', version='%(prog)s 0.11b')
     args = parser.parse_args()
     if args.funclib is not None:
-        funclib = importlib.import_module(os.path.splitext(args.funclib)[0])
+        direc = os.path.dirname(args.funclib)
+        base = os.path.basename(args.funclib)
+        if direc != "" and direc is not None and direc not in sys.path:
+            sys.path.insert(1, direc)
+        funclib = importlib.import_module(os.path.splitext(base)[0])
     
     basefilestr = args.input.read()
     doit(basefilestr, args.output)
